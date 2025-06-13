@@ -1,5 +1,6 @@
-// src/pages/ProductsPage.jsx - Day 3: Async Actions
+// src/pages/ProductsPage.jsx - Day 3-4: Async Actions + Route Params
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useProductStore } from '../store';
 
 function ProductsPage() {
@@ -135,15 +136,25 @@ function ProductsPage() {
                 marginBottom: '1rem'
               }}
             />
-            <h3 style={{ 
-              fontSize: '1rem', 
-              marginBottom: '0.5rem',
-              height: '3rem',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }}>
-              {product.title}
-            </h3>
+            <Link
+              to={`/products/${product.id}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <h3 style={{
+                fontSize: '1rem',
+                marginBottom: '0.5rem',
+                height: '3rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.color = '#2196F3'}
+              onMouseLeave={(e) => e.target.style.color = 'inherit'}
+              >
+                {product.title}
+              </h3>
+            </Link>
             <p style={{ 
               color: '#666', 
               fontSize: '0.9rem',
@@ -168,30 +179,50 @@ function ProductsPage() {
             }}>
               {product.description}
             </p>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
               marginTop: '0.5rem'
             }}>
-              <span style={{ color: '#ff9800' }}>⭐</span>
-              <span style={{ marginLeft: '0.25rem', fontSize: '0.9rem' }}>
-                {product.rating?.rate} ({product.rating?.count} รีวิว)
-              </span>
+              <div>
+                <span style={{ color: '#ff9800' }}>⭐</span>
+                <span style={{ marginLeft: '0.25rem', fontSize: '0.9rem' }}>
+                  {product.rating?.rate} ({product.rating?.count} รีวิว)
+                </span>
+              </div>
+              <Link to={`/products/${product.id}`}>
+                <button style={{
+                  backgroundColor: '#2196F3',
+                  color: 'white',
+                  padding: '0.25rem 0.75rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem'
+                }}>
+                  ดูรายละเอียด →
+                </button>
+              </Link>
             </div>
           </div>
         ))}
       </div>
 
       <div style={{ marginTop: '3rem', padding: '2rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>🎯 สิ่งที่เกิดขึ้นใน Day 3:</h3>
+        <h3>🎯 สิ่งที่เกิดขึ้นใน Day 3-4:</h3>
         <ol style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
           <li><strong>useEffect:</strong> เรียก fetchProducts() เมื่อ component โหลด</li>
           <li><strong>Loading State:</strong> แสดง spinner ขณะรอข้อมูล</li>
           <li><strong>API Call:</strong> ดึงข้อมูลจาก fakestoreapi.com</li>
           <li><strong>Success:</strong> แสดงรายการสินค้าในรูปแบบ grid</li>
           <li><strong>Error Handling:</strong> แสดงข้อความผิดพลาดและปุ่มลองใหม่</li>
-          <li><strong>Cleanup:</strong> ล้างข้อมูลเมื่อออกจากหน้า</li>
+          <li><strong>Product Links:</strong> คลิกชื่อสินค้าหรือปุ่มเพื่อดูรายละเอียด (Day 4)</li>
+          <li><strong>Dynamic Routes:</strong> ลิงก์ไปยัง /products/:productId (Day 4)</li>
         </ol>
+        <p style={{ marginTop: '1rem', fontWeight: 'bold' }}>
+          💡 ลองคลิกที่ชื่อสินค้าหรือปุ่ม "ดูรายละเอียด" เพื่อไปยังหน้ารายละเอียด!
+        </p>
       </div>
     </div>
   );

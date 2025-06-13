@@ -1,4 +1,4 @@
-// src/pages/HomePage.jsx - Day 3: Async Actions
+// src/pages/HomePage.jsx - Day 4: Route Params
 import { Link } from 'react-router-dom';
 import { useCounterStore, useAuthStore, useProductStore } from '../store';
 
@@ -9,13 +9,13 @@ function HomePage() {
   // ดึง state จาก Auth Store (Day 2)
   const { isLoggedIn, userProfile } = useAuthStore();
 
-  // ดึง state จาก Product Store (Day 3)
-  const { products, loading } = useProductStore();
+  // ดึง state จาก Product Store (Day 3-4)
+  const { products, loading, currentProduct } = useProductStore();
 
   return (
     <div>
       <h1>🏠 Home Page</h1>
-      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 3!</p>
+      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 4!</p>
 
       {/* Authentication Status Display */}
       <div style={{
@@ -86,15 +86,44 @@ function HomePage() {
         </Link>
       </div>
 
+      {/* Current Product Display - Day 4 */}
+      {currentProduct && (
+        <div style={{
+          margin: '2rem 0',
+          padding: '1rem',
+          border: '2px solid #9C27B0',
+          borderRadius: '8px',
+          backgroundColor: '#f3e5f5'
+        }}>
+          <h2>📦 สินค้าที่กำลังดู</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <img
+              src={currentProduct.image}
+              alt={currentProduct.title}
+              style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+            />
+            <div>
+              <h4 style={{ margin: '0 0 0.5rem 0' }}>{currentProduct.title}</h4>
+              <p style={{ margin: 0, color: '#666' }}>${currentProduct.price}</p>
+            </div>
+          </div>
+          <Link to={`/products/${currentProduct.id}`}>
+            <button style={{ backgroundColor: '#9C27B0', marginTop: '1rem' }}>
+              📦 ดูรายละเอียดเต็ม
+            </button>
+          </Link>
+        </div>
+      )}
+
       <div style={{ marginTop: '2rem' }}>
-        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 3:</h3>
+        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 4:</h3>
         <ul style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
-          <li><strong>Async Actions:</strong> การสร้าง action ที่ทำงานแบบ asynchronous</li>
-          <li><strong>Loading State:</strong> จัดการสถานะการโหลดข้อมูล</li>
-          <li><strong>Error Handling:</strong> จัดการข้อผิดพลาดจาก API</li>
-          <li><strong>API Integration:</strong> ดึงข้อมูลจาก External API</li>
-          <li><strong>useEffect:</strong> เรียก async action เมื่อ component โหลด</li>
-          <li><strong>Multiple Stores:</strong> ใช้ 3 stores ร่วมกัน (Counter, Auth, Product)</li>
+          <li><strong>useParams:</strong> ดึงค่า dynamic จาก URL parameters</li>
+          <li><strong>Dynamic Routes:</strong> /products/:productId route pattern</li>
+          <li><strong>URL Sync:</strong> State ซิงค์กับ URL เมื่อ URL เปลี่ยน</li>
+          <li><strong>useEffect Dependency:</strong> re-fetch เมื่อ productId เปลี่ยน</li>
+          <li><strong>Navigation:</strong> useNavigate สำหรับกลับหน้าก่อนหน้า</li>
+          <li><strong>Multiple States:</strong> แยก loading/error สำหรับแต่ละ action</li>
         </ul>
       </div>
 
