@@ -1,4 +1,4 @@
-// src/pages/HomePage.jsx - Day 4: Route Params
+// src/pages/HomePage.jsx - Day 5: Middleware
 import { Link } from 'react-router-dom';
 import { useCounterStore, useAuthStore, useProductStore } from '../store';
 
@@ -15,7 +15,35 @@ function HomePage() {
   return (
     <div>
       <h1>🏠 Home Page</h1>
-      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 4!</p>
+      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 5!</p>
+
+      {/* Day 5: Middleware Information */}
+      <div style={{
+        margin: '2rem 0',
+        padding: '1rem',
+        border: '2px solid #9C27B0',
+        borderRadius: '8px',
+        backgroundColor: '#f3e5f5'
+      }}>
+        <h2>🔧 Day 5: Middleware Features</h2>
+        <div style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
+          <h3>🛠️ Redux DevTools:</h3>
+          <ul>
+            <li>เปิด Browser DevTools (F12)</li>
+            <li>ไปที่แท็บ "Redux"</li>
+            <li>ดู state และ actions ของทุก store</li>
+            <li>ลองกดปุ่มต่างๆ และดู action ใน DevTools</li>
+          </ul>
+
+          <h3>💾 Persist (Auth Store):</h3>
+          <ul>
+            <li>ล็อกอินแล้วกด Refresh หน้า → ยังล็อกอินอยู่!</li>
+            <li>ข้อมูลเก็บใน localStorage</li>
+            <li>เปิด DevTools → Application → Local Storage</li>
+            <li>ดู key "auth-storage"</li>
+          </ul>
+        </div>
+      </div>
 
       {/* Authentication Status Display */}
       <div style={{
@@ -116,15 +144,24 @@ function HomePage() {
       )}
 
       <div style={{ marginTop: '2rem' }}>
-        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 4:</h3>
+        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 5:</h3>
         <ul style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
-          <li><strong>useParams:</strong> ดึงค่า dynamic จาก URL parameters</li>
-          <li><strong>Dynamic Routes:</strong> /products/:productId route pattern</li>
-          <li><strong>URL Sync:</strong> State ซิงค์กับ URL เมื่อ URL เปลี่ยน</li>
-          <li><strong>useEffect Dependency:</strong> re-fetch เมื่อ productId เปลี่ยน</li>
-          <li><strong>Navigation:</strong> useNavigate สำหรับกลับหน้าก่อนหน้า</li>
-          <li><strong>Multiple States:</strong> แยก loading/error สำหรับแต่ละ action</li>
+          <li><strong>devtools Middleware:</strong> เชื่อมต่อกับ Redux DevTools</li>
+          <li><strong>persist Middleware:</strong> บันทึก state ใน localStorage</li>
+          <li><strong>Action Names:</strong> ตั้งชื่อ action สำหรับ debugging</li>
+          <li><strong>Middleware Composition:</strong> ใช้หลาย middleware ร่วมกัน</li>
+          <li><strong>Partialize:</strong> เลือกเฉพาะ state ที่ต้องการ persist</li>
+          <li><strong>Storage Key:</strong> กำหนดชื่อ key ใน localStorage</li>
         </ul>
+
+        <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
+          <p><strong>💡 ทดสอบ Middleware:</strong></p>
+          <ol style={{ textAlign: 'left', margin: '0.5rem 0' }}>
+            <li>เปิด Redux DevTools และดู state changes</li>
+            <li>ล็อกอินแล้วกด F5 (Refresh) → ยังล็อกอินอยู่!</li>
+            <li>ดู localStorage ใน DevTools</li>
+          </ol>
+        </div>
       </div>
 
       <div style={{ marginTop: '2rem' }}>
