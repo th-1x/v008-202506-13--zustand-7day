@@ -1,9 +1,10 @@
-// src/App.jsx - Day 2: การจัดการสถานะผู้ใช้ (Authentication Flow)
+// src/App.jsx - Day 3: การดึงข้อมูลจากภายนอก (Async Actions)
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
+import ProductsPage from './pages/ProductsPage';
 import { useAuthStore } from './store';
 import './App.css';
 
@@ -23,6 +24,8 @@ function App() {
         <Link to="/">🏠 Home</Link>
         <span> | </span>
         <Link to="/about">📖 About</Link>
+        <span> | </span>
+        <Link to="/products">🛍️ Products</Link>
         <span> | </span>
 
         {isLoggedIn ? (
@@ -57,6 +60,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>

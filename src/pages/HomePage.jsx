@@ -1,6 +1,6 @@
-// src/pages/HomePage.jsx - Day 2: Authentication Flow
+// src/pages/HomePage.jsx - Day 3: Async Actions
 import { Link } from 'react-router-dom';
-import { useCounterStore, useAuthStore } from '../store';
+import { useCounterStore, useAuthStore, useProductStore } from '../store';
 
 function HomePage() {
   // ดึง state และ actions จาก Counter Store (Day 1)
@@ -9,10 +9,13 @@ function HomePage() {
   // ดึง state จาก Auth Store (Day 2)
   const { isLoggedIn, userProfile } = useAuthStore();
 
+  // ดึง state จาก Product Store (Day 3)
+  const { products, loading } = useProductStore();
+
   return (
     <div>
       <h1>🏠 Home Page</h1>
-      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 2!</p>
+      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 3!</p>
 
       {/* Authentication Status Display */}
       <div style={{
@@ -59,14 +62,39 @@ function HomePage() {
         </div>
       </div>
 
+      {/* Product Store Status - Day 3 */}
+      <div style={{
+        margin: '2rem 0',
+        padding: '1rem',
+        border: '2px solid #FF9800',
+        borderRadius: '8px',
+        backgroundColor: '#fff8e1'
+      }}>
+        <h2>🛍️ สถานะสินค้า (Day 3)</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+          <div>
+            <p><strong>จำนวนสินค้า:</strong> {products.length} รายการ</p>
+          </div>
+          <div>
+            <p><strong>สถานะ:</strong> {loading ? '⏳ กำลังโหลด...' : '✅ พร้อมใช้งาน'}</p>
+          </div>
+        </div>
+        <Link to="/products">
+          <button style={{ backgroundColor: '#FF9800', marginTop: '1rem' }}>
+            🛍️ ดูสินค้าทั้งหมด
+          </button>
+        </Link>
+      </div>
+
       <div style={{ marginTop: '2rem' }}>
-        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 2:</h3>
+        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 3:</h3>
         <ul style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
-          <li><strong>Authentication State:</strong> จัดการสถานะการล็อกอิน</li>
-          <li><strong>Conditional Rendering:</strong> แสดงเนื้อหาตามสถานะ</li>
-          <li><strong>useNavigate:</strong> เปลี่ยนหน้าหลังจาก Action</li>
-          <li><strong>Protected Route:</strong> ป้องกันการเข้าถึงหน้าสำคัญ</li>
-          <li><strong>Multiple Stores:</strong> ใช้หลาย Store ในแอปเดียว</li>
+          <li><strong>Async Actions:</strong> การสร้าง action ที่ทำงานแบบ asynchronous</li>
+          <li><strong>Loading State:</strong> จัดการสถานะการโหลดข้อมูล</li>
+          <li><strong>Error Handling:</strong> จัดการข้อผิดพลาดจาก API</li>
+          <li><strong>API Integration:</strong> ดึงข้อมูลจาก External API</li>
+          <li><strong>useEffect:</strong> เรียก async action เมื่อ component โหลด</li>
+          <li><strong>Multiple Stores:</strong> ใช้ 3 stores ร่วมกัน (Counter, Auth, Product)</li>
         </ul>
       </div>
 
@@ -74,6 +102,9 @@ function HomePage() {
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link to="/about">
             <button>📖 ไปหน้า About</button>
+          </Link>
+          <Link to="/products">
+            <button style={{ backgroundColor: '#FF9800' }}>🛍️ ดูสินค้า</button>
           </Link>
           {!isLoggedIn && (
             <Link to="/login">
