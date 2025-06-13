@@ -1,36 +1,27 @@
-// src/App.jsx
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+// src/App.jsx - Day 1: ปูพื้นฐาน State และ Route
+import { Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
-import LoginPage from './pages/LoginPage';
-
-import { useAuthStore } from './zudtand/store';
+import AboutPage from './pages/AboutPage';
+import './App.css';
 
 function App() {
-  const { isLoggedIn, logout } = useAuthStore();
-
   return (
-    <BrowserRouter>
+    <div>
+      {/* Navbar ง่ายๆ ด้วย Link components */}
       <nav>
-        <Link to="/">Home</Link> |{' '}
-        {isLoggedIn ? (
-          <>
-            <Link to="/profile">Profile</Link> |{' '}
-            <button onClick={logout}>Logout</button>
-          </>
-        ) : (
-          <Link to="/login">Login</Link>
-        )}
+        <Link to="/">🏠 Home</Link>
+        <span> | </span>
+        <Link to="/about">📖 About</Link>
       </nav>
 
+      {/* Main content area */}
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </main>
-    </BrowserRouter>
+    </div>
   );
 }
 
