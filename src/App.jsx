@@ -1,4 +1,4 @@
-// src/App.jsx - Day 4: ซิงค์ State กับ URL (Route Params)
+// src/App.jsx - Day 6: Performance และ Best Practices
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -11,7 +11,11 @@ import './App.css';
 
 function App() {
   const navigate = useNavigate();
-  const { isLoggedIn, userProfile, logout } = useAuthStore();
+
+  // ✅ Day 6: ใช้ selector functions แทนการ destructure ทั้ง store
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const userProfile = useAuthStore(state => state.userProfile);
+  const logout = useAuthStore(state => state.logout);
 
   const handleLogout = () => {
     logout();

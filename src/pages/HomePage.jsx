@@ -1,21 +1,34 @@
-// src/pages/HomePage.jsx - Day 5: Middleware
+// src/pages/HomePage.jsx - Day 6: Performance และ Best Practices
 import { Link } from 'react-router-dom';
 import { useCounterStore, useAuthStore, useProductStore } from '../store';
+import TestButtons from '../components/TestButtons';
+import IsolatedPerformanceTest from '../components/IsolatedPerformanceTest';
 
 function HomePage() {
+  // ✅ Day 6: ใช้ selector functions แทนการ destructure ทั้ง store
   // ดึง state และ actions จาก Counter Store (Day 1)
-  const { count, increment, decrement, reset } = useCounterStore();
+  const count = useCounterStore(state => state.count);
+  const increment = useCounterStore(state => state.increment);
+  const decrement = useCounterStore(state => state.decrement);
+  const reset = useCounterStore(state => state.reset);
 
   // ดึง state จาก Auth Store (Day 2)
-  const { isLoggedIn, userProfile } = useAuthStore();
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const userProfile = useAuthStore(state => state.userProfile);
 
   // ดึง state จาก Product Store (Day 3-4)
-  const { products, loading, currentProduct } = useProductStore();
+  const products = useProductStore(state => state.products);
+  const loading = useProductStore(state => state.loading);
+  const currentProduct = useProductStore(state => state.currentProduct);
 
   return (
     <div>
       <h1>🏠 Home Page</h1>
-      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 5!</p>
+      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 6!</p>
+
+      {/* Day 6: Performance Demo */}
+      <TestButtons />
+      <IsolatedPerformanceTest />
 
       {/* Day 5: Middleware Information */}
       <div style={{
@@ -144,22 +157,22 @@ function HomePage() {
       )}
 
       <div style={{ marginTop: '2rem' }}>
-        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 5:</h3>
+        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 6:</h3>
         <ul style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
-          <li><strong>devtools Middleware:</strong> เชื่อมต่อกับ Redux DevTools</li>
-          <li><strong>persist Middleware:</strong> บันทึก state ใน localStorage</li>
-          <li><strong>Action Names:</strong> ตั้งชื่อ action สำหรับ debugging</li>
-          <li><strong>Middleware Composition:</strong> ใช้หลาย middleware ร่วมกัน</li>
-          <li><strong>Partialize:</strong> เลือกเฉพาะ state ที่ต้องการ persist</li>
-          <li><strong>Storage Key:</strong> กำหนดชื่อ key ใน localStorage</li>
+          <li><strong>Selector Functions:</strong> ใช้ useStore(state =&gt; state.field) แทน destructuring</li>
+          <li><strong>Performance Optimization:</strong> หลีกเลี่ยง unnecessary re-renders</li>
+          <li><strong>Re-render Tracking:</strong> ใช้ useRef เพื่อนับ re-renders</li>
+          <li><strong>Store Splitting:</strong> แยก stores ตามโดเมน (auth, counter, product)</li>
+          <li><strong>Best Practices:</strong> เลือกเฉพาะ state ที่ component ต้องการ</li>
+          <li><strong>Component Isolation:</strong> แต่ละ component re-render เฉพาะเมื่อ state ที่ใช้เปลี่ยน</li>
         </ul>
 
         <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
-          <p><strong>💡 ทดสอบ Middleware:</strong></p>
+          <p><strong>💡 ทดสอบ Performance:</strong></p>
           <ol style={{ textAlign: 'left', margin: '0.5rem 0' }}>
-            <li>เปิด Redux DevTools และดู state changes</li>
-            <li>ล็อกอินแล้วกด F5 (Refresh) → ยังล็อกอินอยู่!</li>
-            <li>ดู localStorage ใน DevTools</li>
+            <li>ดู re-render count ใน Performance Demo ด้านบน</li>
+            <li>กดปุ่มต่างๆ และสังเกต component ไหน re-render บ้าง</li>
+            <li>เปิด Redux DevTools เพื่อดู action ที่เกิดขึ้น</li>
           </ol>
         </div>
       </div>
