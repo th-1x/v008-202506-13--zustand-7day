@@ -1,7 +1,7 @@
-// src/pages/ProductDetailPage.jsx - Day 4: Route Params
+// src/pages/ProductDetailPage.jsx - Day 7: Mini Wishlist App
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useProductStore } from '../store';
+import { useProductStore, useWishlistStore } from '../store';
 
 function ProductDetailPage() {
   // ดึง productId จาก URL parameters
@@ -9,13 +9,17 @@ function ProductDetailPage() {
   const navigate = useNavigate();
   
   // ดึง state และ actions จาก Product Store
-  const { 
-    currentProduct, 
-    productLoading, 
-    productError, 
-    fetchProductById, 
-    clearCurrentProduct 
+  const {
+    currentProduct,
+    productLoading,
+    productError,
+    fetchProductById,
+    clearCurrentProduct
   } = useProductStore();
+
+  // Day 7: Wishlist functionality
+  const toggleWishlist = useWishlistStore(state => state.toggleWishlist);
+  const isInWishlist = useWishlistStore(state => state.isInWishlist);
 
   // ใช้ useEffect เพื่อดึงข้อมูลเมื่อ productId เปลี่ยน
   useEffect(() => {
@@ -230,18 +234,37 @@ function ProductDetailPage() {
             <p>{currentProduct.description}</p>
           </div>
 
-          <button style={{ 
-            backgroundColor: '#ff9800',
-            color: 'white',
-            padding: '1rem 2rem',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '1.1rem',
-            width: '100%'
-          }}>
-            🛒 เพิ่มลงตะกร้า
-          </button>
+          {/* Day 7: Action Buttons */}
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button style={{
+              backgroundColor: '#ff9800',
+              color: 'white',
+              padding: '1rem 2rem',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '1.1rem',
+              flex: 1
+            }}>
+              🛒 เพิ่มลงตะกร้า
+            </button>
+
+            <button
+              onClick={() => toggleWishlist(currentProduct.id)}
+              style={{
+                backgroundColor: isInWishlist(currentProduct.id) ? '#f44336' : '#4CAF50',
+                color: 'white',
+                padding: '1rem 2rem',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '1.1rem',
+                minWidth: '200px'
+              }}
+            >
+              {isInWishlist(currentProduct.id) ? '💔 ลบจาก Wishlist' : '💖 เพิ่มใน Wishlist'}
+            </button>
+          </div>
         </div>
       </div>
 

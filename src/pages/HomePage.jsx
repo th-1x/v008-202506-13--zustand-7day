@@ -1,6 +1,6 @@
-// src/pages/HomePage.jsx - Day 6: Performance และ Best Practices
+// src/pages/HomePage.jsx - Day 7: Mini Wishlist App
 import { Link } from 'react-router-dom';
-import { useCounterStore, useAuthStore, useProductStore } from '../store';
+import { useCounterStore, useAuthStore, useProductStore, useWishlistStore } from '../store';
 import TestButtons from '../components/TestButtons';
 import IsolatedPerformanceTest from '../components/IsolatedPerformanceTest';
 
@@ -21,10 +21,13 @@ function HomePage() {
   const loading = useProductStore(state => state.loading);
   const currentProduct = useProductStore(state => state.currentProduct);
 
+  // ดึง state จาก Wishlist Store (Day 7)
+  const wishlistCount = useWishlistStore(state => state.itemIds.length);
+
   return (
     <div>
       <h1>🏠 Home Page</h1>
-      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 6!</p>
+      <p>ยินดีต้อนรับสู่ Zustand Workshop Day 7!</p>
 
       {/* Day 6: Performance Demo */}
       <TestButtons />
@@ -103,28 +106,38 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Product Store Status - Day 3 */}
+      {/* Wishlist Store Status - Day 7 */}
       <div style={{
         margin: '2rem 0',
         padding: '1rem',
-        border: '2px solid #FF9800',
+        border: '2px solid #E91E63',
         borderRadius: '8px',
-        backgroundColor: '#fff8e1'
+        backgroundColor: '#fce4ec'
       }}>
-        <h2>🛍️ สถานะสินค้า (Day 3)</h2>
+        <h2>💖 Mini Wishlist App (Day 7)</h2>
         <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
           <div>
-            <p><strong>จำนวนสินค้า:</strong> {products.length} รายการ</p>
+            <p><strong>สินค้าใน Wishlist:</strong> {wishlistCount} รายการ</p>
+          </div>
+          <div>
+            <p><strong>สินค้าทั้งหมด:</strong> {products.length} รายการ</p>
           </div>
           <div>
             <p><strong>สถานะ:</strong> {loading ? '⏳ กำลังโหลด...' : '✅ พร้อมใช้งาน'}</p>
           </div>
         </div>
-        <Link to="/products">
-          <button style={{ backgroundColor: '#FF9800', marginTop: '1rem' }}>
-            🛍️ ดูสินค้าทั้งหมด
-          </button>
-        </Link>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+          <Link to="/products">
+            <button style={{ backgroundColor: '#FF9800' }}>
+              🛍️ ดูสินค้าทั้งหมด
+            </button>
+          </Link>
+          <Link to="/wishlist">
+            <button style={{ backgroundColor: '#E91E63' }}>
+              💖 ดู Wishlist ({wishlistCount})
+            </button>
+          </Link>
+        </div>
       </div>
 
       {/* Current Product Display - Day 4 */}
@@ -157,22 +170,25 @@ function HomePage() {
       )}
 
       <div style={{ marginTop: '2rem' }}>
-        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 6:</h3>
+        <h3>🎯 สิ่งที่เราเรียนรู้ใน Day 7:</h3>
         <ul style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
-          <li><strong>Selector Functions:</strong> ใช้ useStore(state =&gt; state.field) แทน destructuring</li>
-          <li><strong>Performance Optimization:</strong> หลีกเลี่ยง unnecessary re-renders</li>
-          <li><strong>Re-render Tracking:</strong> ใช้ useRef เพื่อนับ re-renders</li>
-          <li><strong>Store Splitting:</strong> แยก stores ตามโดเมน (auth, counter, product)</li>
-          <li><strong>Best Practices:</strong> เลือกเฉพาะ state ที่ component ต้องการ</li>
-          <li><strong>Component Isolation:</strong> แต่ละ component re-render เฉพาะเมื่อ state ที่ใช้เปลี่ยน</li>
+          <li><strong>Wishlist Store:</strong> ใช้ persist + devtools สำหรับ wishlist</li>
+          <li><strong>Protected Routes:</strong> Wishlist page ต้องล็อกอินก่อน</li>
+          <li><strong>Product Filtering:</strong> แสดงเฉพาะสินค้าใน wishlist</li>
+          <li><strong>Toggle Actions:</strong> เพิ่ม/ลบสินค้าจาก wishlist</li>
+          <li><strong>UI Integration:</strong> แสดง count ใน navbar ด้วย selector</li>
+          <li><strong>State Composition:</strong> ใช้ 4 stores ร่วมกัน (auth, product, counter, wishlist)</li>
         </ul>
 
         <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
-          <p><strong>💡 ทดสอบ Performance:</strong></p>
+          <p><strong>💡 ทดสอบ Wishlist App:</strong></p>
           <ol style={{ textAlign: 'left', margin: '0.5rem 0' }}>
-            <li>ดู re-render count ใน Performance Demo ด้านบน</li>
-            <li>กดปุ่มต่างๆ และสังเกต component ไหน re-render บ้าง</li>
-            <li>เปิด Redux DevTools เพื่อดู action ที่เกิดขึ้น</li>
+            <li>ล็อกอินเข้าระบบ</li>
+            <li>ไปหน้า Products และเพิ่มสินค้าใน Wishlist</li>
+            <li>ดู count ใน navbar เปลี่ยนแปลง</li>
+            <li>กด F5 (Refresh) → Wishlist ยังคงอยู่!</li>
+            <li>ไปหน้า Wishlist เพื่อดูสินค้าที่เลือก</li>
+            <li>ลองลบสินค้าออกจาก Wishlist</li>
           </ol>
         </div>
       </div>
@@ -184,6 +200,9 @@ function HomePage() {
           </Link>
           <Link to="/products">
             <button style={{ backgroundColor: '#FF9800' }}>🛍️ ดูสินค้า</button>
+          </Link>
+          <Link to="/wishlist">
+            <button style={{ backgroundColor: '#E91E63' }}>💖 Wishlist ({wishlistCount})</button>
           </Link>
           {!isLoggedIn && (
             <Link to="/login">

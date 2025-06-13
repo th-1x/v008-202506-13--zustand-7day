@@ -1,11 +1,15 @@
-// src/pages/ProductsPage.jsx - Day 3-4: Async Actions + Route Params
+// src/pages/ProductsPage.jsx - Day 7: Mini Wishlist App
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useProductStore } from '../store';
+import { useProductStore, useWishlistStore } from '../store';
 
 function ProductsPage() {
   // ดึง state และ actions จาก Product Store
   const { products, loading, error, fetchProducts, clearProducts } = useProductStore();
+
+  // Day 7: Wishlist functionality
+  const toggleWishlist = useWishlistStore(state => state.toggleWishlist);
+  const isInWishlist = useWishlistStore(state => state.isInWishlist);
 
   // ใช้ useEffect เพื่อดึงข้อมูลเมื่อ component โหลด
   useEffect(() => {
@@ -191,19 +195,44 @@ function ProductsPage() {
                   {product.rating?.rate} ({product.rating?.count} รีวิว)
                 </span>
               </div>
-              <Link to={`/products/${product.id}`}>
+            </div>
+
+            {/* Day 7: Action Buttons */}
+            <div style={{
+              display: 'flex',
+              gap: '0.5rem',
+              marginTop: '1rem'
+            }}>
+              <Link to={`/products/${product.id}`} style={{ flex: 1 }}>
                 <button style={{
                   backgroundColor: '#2196F3',
                   color: 'white',
-                  padding: '0.25rem 0.75rem',
+                  padding: '0.5rem',
                   border: 'none',
                   borderRadius: '4px',
                   cursor: 'pointer',
-                  fontSize: '0.8rem'
+                  fontSize: '0.8rem',
+                  width: '100%'
                 }}>
-                  ดูรายละเอียด →
+                  📦 ดูรายละเอียด
                 </button>
               </Link>
+
+              <button
+                onClick={() => toggleWishlist(product.id)}
+                style={{
+                  backgroundColor: isInWishlist(product.id) ? '#f44336' : '#4CAF50',
+                  color: 'white',
+                  padding: '0.5rem',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                  minWidth: '100px'
+                }}
+              >
+                {isInWishlist(product.id) ? '💔 ลบออก' : '💖 ชื่นชอบ'}
+              </button>
             </div>
           </div>
         ))}

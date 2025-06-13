@@ -154,3 +154,63 @@ export const useProductStore = create(
     }
   )
 );
+
+// สร้าง Wishlist Store สำหรับ Day 7 Workshop
+export const useWishlistStore = create(
+  persist(
+    devtools(
+      (set, get) => ({
+        // State
+        itemIds: [], // array ของ product IDs
+
+        // Actions
+        addToWishlist: (productId) => {
+          const currentItems = get().itemIds;
+          if (!currentItems.includes(productId)) {
+            set({
+              itemIds: [...currentItems, productId]
+            }, false, 'wishlist/add');
+          }
+        },
+
+        removeFromWishlist: (productId) => {
+          const currentItems = get().itemIds;
+          set({
+            itemIds: currentItems.filter(id => id !== productId)
+          }, false, 'wishlist/remove');
+        },
+
+        toggleWishlist: (productId) => {
+          const currentItems = get().itemIds;
+          if (currentItems.includes(productId)) {
+            get().removeFromWishlist(productId);
+          } else {
+            get().addToWishlist(productId);
+          }
+        },
+
+        clearWishlist: () => set({
+          itemIds: []
+        }, false, 'wishlist/clear'),
+
+        // Computed values
+        isInWishlist: (productId) => {
+          return get().itemIds.includes(productId);
+        },
+
+        getWishlistCount: () => {
+          return get().itemIds.length;
+        },
+      }),
+      {
+        name: 'wishlist-store', // ชื่อใน Redux DevTools
+      }
+    ),
+    {
+      name: 'wishlist-storage', // ชื่อ key ใน localStorage
+      partialize: (state) => ({
+        itemIds: state.itemIds
+      }),
+    }
+  )
+);
